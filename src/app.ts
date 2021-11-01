@@ -10,7 +10,7 @@ const port = config.get<number>("port");
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // parses the body
 
 app.listen(port, async () => {
   logger.info(`Server is running on port:${port}`);
