@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import config from "config";
-
 export interface UserDocument extends mongoose.Document {
   email: string;
   name: string;
   password: string;
   createdAt: Date;
   updatedAt: Date;
+  comparePassword(inputPassword: string): Promise<Boolean>;
 }
 
 const userSchema = new mongoose.Schema(
@@ -40,7 +40,9 @@ userSchema.methods.comparePassword = async function (
 ): Promise<Boolean> {
   const user = this as UserDocument;
 
-  return bcrypt.compare(user.password, candidatePassword).catch((e) => false);
+  return bcrypt
+    .compare(user.password, candidatePassword)
+    .catch((e: any) => false);
 };
 
 const UserModel = mongoose.model<UserDocument>("User", userSchema);
